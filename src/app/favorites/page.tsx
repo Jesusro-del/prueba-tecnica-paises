@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Country } from "@/types/country";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { CircleArrowLeft } from 'lucide-react';
+
 
 export default function FavoritesPage() {
   const [items, setItems] = useState<Country[]>([]);
@@ -22,8 +24,12 @@ export default function FavoritesPage() {
   return (
     <main className="space-y-4">
       <header className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Favorites</h1>
-        <Link href="/" className="underline text-sm">← Volver</Link>
+        <h1 className="text-2xl font-semibold">Lista de Favoritos</h1>
+        <Link href="/" scroll={false} className="text-blue-600 underline">
+          <Button  size="sm" className="gap-1">
+             <CircleArrowLeft className="h-4 w-4"/>Volvere
+          </Button>
+        </Link>
       </header>
 
       {items.length === 0 ? (

@@ -5,6 +5,9 @@ import CountryModal from "./(components)/CountryModal";
 import SearchBar from "./(components)/SearchBar";
 import Filters from "./(components)/Filters";
 import Sort from "./(components)/Sort";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { SquareStar } from "lucide-react";
 
 export const revalidate = 1800; // 30 min
 
@@ -47,8 +50,12 @@ export default async function Home({ searchParams }: { searchParams?: Search }) 
   return (
     <main className="space-y-4">
       <header className="flex items-center justify-between gap-3 flex-wrap">
-        <h1 className="text-2xl font-semibold">Countries</h1>
-        <a className="underline text-sm" href="/favorites">/favorites</a>
+        <h1 className="text-2xl font-semibold">Explorador de Países</h1>
+        <Link href="/favorites" scroll={false} className="text-blue-600 underline">
+          <Button  size="sm" className="gap-1">
+             <SquareStar  className="h-4 w-4"/>Favoritos
+          </Button>
+        </Link>      
       </header>
 
       <div className="flex flex-wrap gap-3 items-end">

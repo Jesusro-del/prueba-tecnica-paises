@@ -1,4 +1,4 @@
-// src/lib/utils.ts
+//IMPLEMENTACION CORRECTA DE COMPONENTES SHADCN 
 import { type ClassValue } from "clsx";
 import clsx from "clsx";
 import { twMerge } from "tailwind-merge";
