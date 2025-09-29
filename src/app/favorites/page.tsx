@@ -32,7 +32,7 @@ export default function FavoritesPage() {
         <h1 className="text-2xl font-semibold">Lista de Favoritos</h1>
         <Link href="/" scroll={false} className="text-blue-600 underline">
           <Button  size="sm" className="gap-1">
-             <CircleArrowLeft className="h-4 w-4"/>Volvere
+             <CircleArrowLeft className="h-4 w-4"/>Volver
           </Button>
         </Link>
       </header>
@@ -58,3 +58,6 @@ export default function FavoritesPage() {
     </main>
   );
 }
+
+
+
