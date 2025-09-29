@@ -1,103 +1,69 @@
-import Image from "next/image";
+import { fetchAllCountries } from "@/lib/restcountries";
+import { Country } from "@/types/country";
+import CountryGrid from "./(components)/CountryGrid";
+import CountryModal from "./(components)/CountryModal";
+import SearchBar from "./(components)/SearchBar";
+import Filters from "./(components)/Filters";
+import Sort from "./(components)/Sort";
 
-export default function Home() {
+export const revalidate = 1800; // 30 min
+
+type Search = {
+  q?: string;
+  region?: string;
+  min?: string;
+  max?: string;
+  sort?: "name" | "population";
+  code?: string;
+};
+
+export default async function Home({ searchParams }: { searchParams?: Search }) {
+  const { q = "", region = "", min = "", max = "", sort = "name", code = "" } = searchParams ?? {};
+  const all = await fetchAllCountries();
+
+  // Filtrado en servidor
+  const qLower = q.trim().toLowerCase();
+  const minPop = Number(min) || 0;
+  const maxPop = Number(max) || Number.MAX_SAFE_INTEGER;
+
+  let filtered: Country[] = all.filter((c) => {
+    const matchesQ = !qLower || c.name.common.toLowerCase().includes(qLower);
+    const matchesRegion = !region || c.region === region;
+    const matchesPop = c.population >= minPop && c.population <= maxPop;
+    return matchesQ && matchesRegion && matchesPop;
+  });
+
+  // Orden
+  if (sort === "population") {
+    filtered.sort((a, b) => a.population - b.population);
+  } else {
+    filtered.sort((a, b) =>
+      a.name.common.localeCompare(b.name.common, undefined, { sensitivity: "base" })
+    );
+  }
+
+  const selected = code ? filtered.find((c) => c.cca3 === code) : undefined;
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="space-y-4">
+      <header className="flex items-center justify-between gap-3 flex-wrap">
+        <h1 className="text-2xl font-semibold">Countries</h1>
+        <a className="underline text-sm" href="/favorites">/favorites</a>
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      <div className="flex flex-wrap gap-3 items-end">
+        <SearchBar />
+        <Filters />
+        <Sort />
+      </div>
+
+      {filtered.length === 0 ? (
+        <p className="text-sm text-gray-600">No hay países que coincidan con los filtros.</p>
+      ) : (
+        <CountryGrid countries={filtered} />
+      )}
+
+      {selected ? <CountryModal country={selected} /> : null}
+    </main>
   );
 }

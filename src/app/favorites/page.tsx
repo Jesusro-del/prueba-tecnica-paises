@@ -1,0 +1,49 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { Country } from "@/types/country";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+
+export default function FavoritesPage() {
+  const [items, setItems] = useState<Country[]>([]);
+
+  useEffect(() => {
+    const raw = localStorage.getItem("favorites");
+    setItems(raw ? JSON.parse(raw) : []);
+  }, []);
+
+  function remove(cca3: string) {
+    const next = items.filter((c) => c.cca3 !== cca3);
+    setItems(next);
+    localStorage.setItem("favorites", JSON.stringify(next));
+  }
+
+  return (
+    <main className="space-y-4">
+      <header className="flex items-center justify-between">
+        <h1 className="text-2xl font-semibold">Favorites</h1>
+        <Link href="/" className="underline text-sm">← Volver</Link>
+      </header>
+
+      {items.length === 0 ? (
+        <p>No tienes favoritos aún.</p>
+      ) : (
+        <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          {items.map((c) => (
+            <li key={c.cca3} className="border rounded p-3 bg-white">
+              <div className="flex items-center justify-between gap-3">
+                <span className="font-medium">{c.name.common}</span>
+                <Button variant="outline" size="sm" onClick={() => remove(c.cca3)}>
+                  Quitar
+                </Button>
+              </div>
+              <p className="text-sm">Región: {c.region}</p>
+              <p className="text-sm">Población: {c.population.toLocaleString()}</p>
+            </li>
+          ))}
+        </ul>
+      )}
+    </main>
+  );
+}
