@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🌍 Prueba Técnica – Explorador de Países
 
-## Getting Started
+Mini aplicación desarrollada con **Next.js 14 + App Router**, **TailwindCSS** y **ShadCN UI**, que consume la API pública de [RestCountries](https://restcountries.com).
 
-First, run the development server:
+## 🚀 Requisitos
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js 18+
+- pnpm / npm / yarn
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## ▶️ Cómo correr el proyecto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clonar el repositorio:
+   ```bash
+   git clone https://github.com/tu-usuario/prueba-tecnica-paises.git
+   cd prueba-tecnica-paises
+2. Instalar Dependencias:
+   ```bash
+   npm install / npm i
+3. Ejecutar Modo Desarrollo:
+   ```bash
+   npm run dev
+   
+## 📌 Funcionalidades
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Listar países con nombre, bandera, región y población.
+Filtrar por nombre, región y rango de población.
+Ver detalles en un modal con información ampliada.
+Gestionar favoritos con persistencia en localStorage.
+Filtros persistidos en la URL, lo que permite mantener estado al refrescar y compartir enlaces.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠️ Opción opcional seleccionada
+1.	Ordenar por nombre o población.
+3.	Persistir filtros en la URL.
