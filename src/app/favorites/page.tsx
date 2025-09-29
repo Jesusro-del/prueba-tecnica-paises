@@ -5,9 +5,10 @@ import { Country } from "@/types/country";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CircleArrowLeft } from 'lucide-react';
-
+import { toast } from "sonner";
 
 export default function FavoritesPage() {
+  //HOOK DE REACT
   const [items, setItems] = useState<Country[]>([]);
 
   useEffect(() => {
@@ -15,10 +16,14 @@ export default function FavoritesPage() {
     setItems(raw ? JSON.parse(raw) : []);
   }, []);
 
+  //ELIMINACION DE PAIS LISTA FAVORITO, RENDERIZADO TOAST
   function remove(cca3: string) {
     const next = items.filter((c) => c.cca3 !== cca3);
     setItems(next);
     localStorage.setItem("favorites", JSON.stringify(next));
+    toast.error("Eliminado de favoritos", {
+    description: `El país con código ${cca3} fue eliminado.`,
+  });
   }
 
   return (

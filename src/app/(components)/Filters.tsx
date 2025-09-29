@@ -12,6 +12,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const REGIONS = ["Africa", "Americas", "Asia", "Europe", "Oceania"];
 
+//PERSISTIMOS FILTROS POR URL CON LOS HOOKS DE NEXT.JS
 export default function Filters() {
   const sp = useSearchParams();
   const pathname = usePathname();
@@ -20,14 +21,14 @@ export default function Filters() {
   function setParam(key: string, val: string) {
     const params = new URLSearchParams(sp.toString());
 
-    // Interpretamos "all" como sin filtro
+    // ALL : SIN FILTRO
     if (val === "all" || val === "") {
       params.delete(key);
     } else {
       params.set(key, val);
     }
 
-    params.delete("code"); // cerrar modal si estaba abierto
+    params.delete("code"); 
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   }
 

@@ -9,7 +9,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SquareStar } from "lucide-react";
 
-export const revalidate = 1800; // 30 min
+export const revalidate = 1800; 
 
 type Search = {
   q?: string;

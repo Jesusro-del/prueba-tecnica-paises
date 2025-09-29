@@ -2,19 +2,26 @@
 
 import Link from "next/link";
 import { Country } from "@/types/country";
-import { Button  } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 import { Eye, Star } from "lucide-react";
 
 function addToFavorites(country: Country) {
   const raw = localStorage.getItem("favorites");
   const list: Country[] = raw ? JSON.parse(raw) : [];
+
+  //VALIDACION DE DUPLICADOS Y DESPLIEGUE DE TOAST
   if (!list.some((c) => c.cca3 === country.cca3)) {
     list.push(country);
     localStorage.setItem("favorites", JSON.stringify(list));
-    // feedback simple (puedes usar toast de shadcn si lo añades)
-    alert("Añadido a favoritos");
+    
+    toast.success("Añadido a favoritos", {
+      description: `${country.name.common} se ha guardado correctamente.`,
+    });
   } else {
-    alert("Ya está en favoritos");
+    toast.warning("Ya está en favoritos", {
+      description: `${country.name.common} ya estaba en la lista.`,
+    });
   }
 }
 

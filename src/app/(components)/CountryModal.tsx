@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { Button } from "@/components/ui/button";
 
 export default function CountryModal({ country }: { country: Country }) {
+  
   const flag = country.flags.svg || country.flags.png || "";
   return (
     <Dialog open>
@@ -22,6 +23,7 @@ export default function CountryModal({ country }: { country: Country }) {
             </Link>
           </DialogClose>
         </div>
+        
         <img
           src={flag}
           alt={country.flags.alt || country.name.common}

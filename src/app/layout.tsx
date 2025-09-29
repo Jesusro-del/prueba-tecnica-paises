@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { Toaster } from "@/components/ui/sonner"
 
 export const metadata: Metadata = {
   title: "Prueba Técnica – Explorador de Países",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="es">
       <body className="min-h-screen bg-gray-50 text-gray-900">
         <div className="container mx-auto p-4">{children}</div>
+        <Toaster />
       </body>
     </html>
   );

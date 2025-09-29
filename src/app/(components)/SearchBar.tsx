@@ -3,6 +3,7 @@
 import { Input } from "@/components/ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
+//PERSISTIMOS FILTROS POR URL CON LOS HOOKS DE NEXT.JS
 export default function SearchBar() {
   const sp = useSearchParams();
   const pathname = usePathname();
@@ -12,8 +13,8 @@ export default function SearchBar() {
     const params = new URLSearchParams(sp.toString());
     if (val) params.set("q", val);
     else params.delete("q");
-    params.delete("code"); // cerrar modal si estaba abierto
-    router.replace(`${pathname}?${params.toString()}`, { scroll: false });
+    params.delete("code"); 
+    router.replace(`${pathname}?${params.toString()}`, { scroll: false }); //ACUTALIZACION DE URL
   }
 
   return (
